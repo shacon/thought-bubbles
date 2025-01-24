@@ -105,6 +105,11 @@ document.getElementById('circleForm').addEventListener('submit', function(e) {
   }
 });
 
+// trying to add touchstart for mobile
+document.getElementById('circleText').addEventListener('touchstart', function(e) {
+  e.stopPropagation();
+}, false);
+
 (function rerender() {
   circles.forEach(circle => circle.render());
   Matter.Engine.update(engine);
