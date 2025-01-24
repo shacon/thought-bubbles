@@ -102,7 +102,7 @@ canvas {
 @media screen and (max-width: 600px) {
   #simulation-container {
     height: 100vw;
-    width: 60%;
+    width: 90%;
     margin: initial;
   }
 

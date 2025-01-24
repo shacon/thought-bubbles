@@ -158,13 +158,16 @@ const canvasHeight = 600;
 
 function createCircle(text) {
     const randomSize = Math.floor(Math.random() * (80 - 40 + 1)) + 40;
+
+    const spawnMargin = 50;
+
     const newCircle = Bodies.circle(
-        Math.random() * (canvasWidth - randomSize) + randomSize/2,
-        Math.random() * (canvasHeight - randomSize) + randomSize/2,
-        randomSize/2,
+        spawnMargin + Math.random() * (canvasWidth / 4),
+        spawnMargin,
+        randomSize / 2,
         {
-            frictionAir: .01,
-            restitution: .8
+            frictionAir: 0.01,
+            restitution: 0.8
         }
     );
 
