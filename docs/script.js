@@ -1,101 +1,3 @@
-// var Engine = Matter.Engine,
-//     Render = Matter.Render,
-//     Runner = Matter.Runner,
-//     Bodies = Matter.Bodies,
-//     Composite = Matter.Composite;
-//     Mouse = Matter.Mouse;
-//     MouseConstraint = Matter.MouseConstraint;
-
-// var canvas = document.getElementById('matter-container');
-// var engine = Engine.create();
-// const circle = {
-//   w: 140,
-//   h: 140,
-//   body: Matter.Bodies.circle(
-//     150,
-//     150,
-//     70,
-//     {frictionAir: .01, gravity: 0, restitution: 1}
-//   ),
-//   elem: document.querySelector("#circle"),
-//   render() {
-//     const {x, y} = this.body.position;
-//     this.elem.style.top = `${y - this.h / 2}px`;
-//     this.elem.style.left = `${x - this.w / 2}px`;
-//     this.elem.style.transform = `rotate(${this.body.angle}rad)`;
-//   },
-// };
-// const wallOptions = { isStatic: true, restitution: .8 };
-// const ground = Bodies.rectangle(300, 600, 600, 60, wallOptions);
-// const leftWall = Bodies.rectangle(100, 300, 60, 600, wallOptions);
-// const rightWall = Bodies.rectangle(600, 300, 60, 600, wallOptions);
-// const ceiling = Bodies.rectangle(300, 60, 600, 60, wallOptions);
-// Matter.Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
-// const mouseConstraint = Matter.MouseConstraint.create(
-//   engine, {element: document.body}
-// );
-// Matter.Composite.add(
-//   engine.world, [ ground, mouseConstraint]
-// );
-// const floatForce = 0.0002;
-// const randomForce = 0.0001;
-// const canvasWidth = 600;
-// const canvasHeight = 600;
-// Matter.Events.on(engine, "beforeUpdate", () => {
-//   circles.forEach(circle => {
-//     Matter.Body.applyForce(circle.body, circle.body.position, { 
-//       x: 0,
-//       y: -floatForce
-//     });
-//     Matter.Body.applyForce(circle.body, circle.body.position, { 
-//       x: (Math.random() - 0.5) * randomForce,
-//       y: 0
-//     });
-//   });
-// });
-// function createCircle(text) {
-//   const randomSize = Math.floor(Math.random() * (140 - 60 + 1)) + 60; // 
-//   const newCircle = {
-//     w: randomSize,
-//     h: randomSize,
-//     body: Matter.Bodies.circle(
-//       Math.random() * canvasWidth,
-//       Math.random() * canvasHeight,
-//       70,
-//       {frictionAir: .01, gravity: 0, restitution: .8}
-//     ),
-//     elem: document.createElement('div'),
-//     render() {
-//       const {x, y} = this.body.position;
-//       this.elem.style.top = `${y - this.h / 2}px`;
-//       this.elem.style.left = `${x - this.w / 2}px`;
-//       this.elem.style.transform = `rotate(${this.body.angle}rad)`;
-//       this.elem.style.width = `${this.w}px`;
-//       this.elem.style.height = `${this.h}px`;
-//     },
-//   };
-//   newCircle.elem.className = 'circle';
-//   newCircle.elem.textContent = text;
-//   document.body.appendChild(newCircle.elem);
-//   Matter.Composite.add(engine.world, newCircle.body);
-//   return newCircle;
-// }
-// const circles = [circle];
-// document.getElementById('circleForm').addEventListener('submit', function(e) {
-//   e.preventDefault();
-//   const text = document.getElementById('circleText').value;
-//   if (text) {
-//     circles.push(createCircle(text));
-//     document.getElementById('circleText').value = '';
-//   }
-// });
-
-
-// (function rerender() {
-//   circles.forEach(circle => circle.render());
-//   Matter.Engine.update(engine);
-//   requestAnimationFrame(rerender);
-// })();
 
 var Engine = Matter.Engine,
     Render = Matter.Render,
@@ -137,8 +39,6 @@ Matter.Composite.add(engine.world, mouseConstraint);
 // keep the mouse in sync with rendering
 render.mouse = mouse;
 
-
-// Render.run(render);
 var runner = Runner.create();
 Runner.run(runner, engine);
 
@@ -157,14 +57,19 @@ const canvasWidth = 600;
 const canvasHeight = 600;
 
 function createCircle(text) {
-    const randomSize = Math.floor(Math.random() * (80 - 40 + 1)) + 40;
+    const baseSize = 40;
+    const scaleFactor = 2;
+    const maxSize = 150;
+    
+    const size = Math.min(baseSize + (text.length * scaleFactor), maxSize);
+    const radius = size / 1.5;
 
     const spawnMargin = 50;
 
     const newCircle = Bodies.circle(
         spawnMargin + Math.random() * (canvasWidth / 4),
-        spawnMargin,
-        randomSize / 2,
+        spawnMargin + Math.random() * (canvasHeight / 2),
+        radius,
         {
             frictionAir: 0.01,
             restitution: 0.8
@@ -174,13 +79,19 @@ function createCircle(text) {
     const elem = document.createElement('div');
     elem.className = 'circle';
     elem.textContent = text;
-    elem.style.width = `${randomSize}px`;
-    elem.style.height = `${randomSize}px`;
+    elem.style.width = `${size}px`;
+    elem.style.height = `${size}px`;
+    elem.style.borderRadius = '50%';
+    elem.style.display = 'flex';
+    elem.style.justifyContent = 'center';
+    elem.style.alignItems = 'center';
+    elem.style.textAlign = 'center';
     circlesContainer.appendChild(elem);
+
 
     const renderCircle = () => {
         const { x, y } = newCircle.position;
-        elem.style.transform = `translate(${x - randomSize/2}px, ${y - randomSize/2}px) rotate(${newCircle.angle}rad)`;
+        elem.style.transform = `translate(${x - size/2}px, ${y - size/2}px) rotate(${newCircle.angle}rad)`;
     };
 
     Matter.Events.on(engine, 'afterUpdate', renderCircle);
@@ -200,12 +111,34 @@ document.getElementById('circleForm').addEventListener('submit', function(e) {
     }
 });
 
+function checkBounds(circle) {
+  // Ensure circle does not exist the canvas
+  const radius = circle.circleRadius;
+  if (circle.position.x < radius) {
+      Matter.Body.setPosition(circle, { x: radius, y: circle.position.y });
+      Matter.Body.setVelocity(circle, { x: Math.abs(circle.velocity.x), y: circle.velocity.y });
+  }
+  if (circle.position.x > canvasWidth - radius) {
+      Matter.Body.setPosition(circle, { x: canvasWidth - radius, y: circle.position.y });
+      Matter.Body.setVelocity(circle, { x: -Math.abs(circle.velocity.x), y: circle.velocity.y });
+  }
+  if (circle.position.y < radius) {
+      Matter.Body.setPosition(circle, { x: circle.position.x, y: radius });
+      Matter.Body.setVelocity(circle, { x: circle.velocity.x, y: Math.abs(circle.velocity.y) });
+  }
+  if (circle.position.y > canvasHeight - radius) {
+      Matter.Body.setPosition(circle, { x: circle.position.x, y: canvasHeight - radius });
+      Matter.Body.setVelocity(circle, { x: circle.velocity.x, y: -Math.abs(circle.velocity.y) });
+  }
+}
+
 Matter.Events.on(engine, "beforeUpdate", () => {
     circles.forEach(circle => {
         Matter.Body.applyForce(circle, circle.position, { 
             x: (Math.random() - 0.5) * randomForce,
             y: -floatForce
         });
+        checkBounds(circle);
     });
 });
 
