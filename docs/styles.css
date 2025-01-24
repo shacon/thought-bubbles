@@ -15,6 +15,11 @@
   color: #59575e;
  }
 
+ #circleText {
+  position: relative;
+  z-index: 100;
+}
+
 .circle {
   padding: 10px;
   position: absolute;
