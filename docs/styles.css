@@ -18,6 +18,8 @@
  #circleText {
   position: relative;
   z-index: 100;
+  touch-action: auto;
+  -webkit-touch-callout: default;
 }
 
 .circle {
