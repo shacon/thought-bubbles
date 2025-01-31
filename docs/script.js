@@ -15,8 +15,8 @@ var render = Render.create({
     canvas: canvas,
     engine: engine,
     options: {
-        width: 600,
-        height: 600,
+        // width: 600,
+        // height: 600,
         wireframes: true,
         background: 'transparent'
     }
@@ -43,20 +43,26 @@ var runner = Runner.create();
 Runner.run(runner, engine);
 
 const wallOptions = { isStatic: true, restitution: .8 };
-const ground = Bodies.rectangle(300, 590, 600, 20, wallOptions);
-const leftWall = Bodies.rectangle(10, 300, 20, 600, wallOptions);
-const rightWall = Bodies.rectangle(590, 300, 20, 600, wallOptions);
-const ceiling = Bodies.rectangle(300, 10, 600, 20, wallOptions);
+
+const container = document.getElementById('simulation-container');
+const width = container.clientWidth;
+const height = container.clientHeight;
+
+const ground = Bodies.rectangle(width/2, height-10, width, 20, wallOptions);
+const leftWall = Bodies.rectangle(10, height/2, 20, height, wallOptions);
+const rightWall = Bodies.rectangle(width-10, height/2, 20, height, wallOptions);
+const ceiling = Bodies.rectangle(width/2, 10, width, 20, wallOptions);
 
 Matter.Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
 
 
 const floatForce = 0.0002;
 const randomForce = 0.0001;
-const canvasWidth = 600;
-const canvasHeight = 600;
+
 
 function createCircle(text) {
+    const width = render.options.width;
+    const height = render.options.height;
     const baseSize = 40;
     const scaleFactor = 2;
     const maxSize = 150;
@@ -67,8 +73,8 @@ function createCircle(text) {
     const spawnMargin = 50;
 
     const newCircle = Bodies.circle(
-        spawnMargin + Math.random() * (canvasWidth / 4),
-        spawnMargin + Math.random() * (canvasHeight / 2),
+        spawnMargin + Math.random() * (width / 4),
+        spawnMargin + Math.random() * (height / 2),
         radius,
         {
             frictionAir: 0.01,
@@ -113,21 +119,23 @@ document.getElementById('circleForm').addEventListener('submit', function(e) {
 
 function checkBounds(circle) {
   // Ensure circle does not exist the canvas
+  const width = render.options.width;
+  const height = render.options.height;
   const radius = circle.circleRadius;
   if (circle.position.x < radius) {
       Matter.Body.setPosition(circle, { x: radius, y: circle.position.y });
       Matter.Body.setVelocity(circle, { x: Math.abs(circle.velocity.x), y: circle.velocity.y });
   }
-  if (circle.position.x > canvasWidth - radius) {
-      Matter.Body.setPosition(circle, { x: canvasWidth - radius, y: circle.position.y });
+  if (circle.position.x > width - radius) {
+      Matter.Body.setPosition(circle, { x: width - radius, y: circle.position.y });
       Matter.Body.setVelocity(circle, { x: -Math.abs(circle.velocity.x), y: circle.velocity.y });
   }
   if (circle.position.y < radius) {
       Matter.Body.setPosition(circle, { x: circle.position.x, y: radius });
       Matter.Body.setVelocity(circle, { x: circle.velocity.x, y: Math.abs(circle.velocity.y) });
   }
-  if (circle.position.y > canvasHeight - radius) {
-      Matter.Body.setPosition(circle, { x: circle.position.x, y: canvasHeight - radius });
+  if (circle.position.y > height - radius) {
+      Matter.Body.setPosition(circle, { x: circle.position.x, y: height - radius });
       Matter.Body.setVelocity(circle, { x: circle.velocity.x, y: -Math.abs(circle.velocity.y) });
   }
 }
@@ -142,28 +150,42 @@ Matter.Events.on(engine, "beforeUpdate", () => {
     });
 });
 
+
 function resizeCanvas() {
   var container = document.getElementById('simulation-container');
   var canvas = document.getElementById('matter-container');
   var width = container.clientWidth;
   var height = container.clientHeight;
 
+  // Update canvas dimensions
   canvas.width = width;
   canvas.height = height;
 
-  // Update Matter.js render bounds
+  // Update render bounds
   render.bounds.max.x = width;
   render.bounds.max.y = height;
   render.options.width = width;
   render.options.height = height;
 
-  // Update wall positions
-  Matter.Body.setPosition(ground, { x: width/2, y: height });
-  Matter.Body.setPosition(leftWall, { x: 0, y: height/2 });
-  Matter.Body.setPosition(rightWall, { x: width, y: height/2 });
-  Matter.Body.setPosition(ceiling, { x: width/2, y: 0 });
+  // Update wall positions and sizes
+  Matter.Body.setPosition(ground, { x: width/2, y: height-10 });
+  Matter.Body.setPosition(leftWall, { x: 10, y: height/2 });
+  Matter.Body.setPosition(rightWall, { x: width-10, y: height/2 });
+  Matter.Body.setPosition(ceiling, { x: width/2, y: 10 });
+
+  // Update wall sizes
+  Matter.Body.setVertices(ground, Bodies.rectangle(width/2, height-10, width, 20).vertices);
+  Matter.Body.setVertices(ceiling, Bodies.rectangle(width/2, 10, width, 20).vertices);
+  Matter.Body.setVertices(leftWall, Bodies.rectangle(10, height/2, 20, height).vertices);
+  Matter.Body.setVertices(rightWall, Bodies.rectangle(width-10, height/2, 20, height).vertices);
+
+  // Force render to update
+  Matter.Render.lookAt(render, {
+      min: { x: 0, y: 0 },
+      max: { x: width, y: height }
+  });
 }
 
 window.addEventListener('resize', resizeCanvas);
-resizeCanvas(); // Call once to set initial size
+resizeCanvas();
 
