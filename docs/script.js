@@ -9,6 +9,7 @@ var Engine = Matter.Engine,
 
 var canvas = document.getElementById('matter-container');
 var circlesContainer = document.getElementById('circles-container');
+var thoughtContainer = document.getElementById('thought-container');
 var engine = Engine.create();
 
 var render = Render.create({
@@ -61,6 +62,7 @@ const randomForce = 0.0001;
 
 
 function createCircle(text) {
+    console.log(ground)
     const width = render.options.width;
     const height = render.options.height;
     const baseSize = 40;
@@ -116,6 +118,41 @@ document.getElementById('circleForm').addEventListener('submit', function(e) {
         document.getElementById('circleText').value = '';
     }
 });
+
+const containerButton = document.getElementById("container-button"); 
+
+// Add the event listener 
+containerButton.addEventListener("click", function() {
+  // This function will be executed when the element is clicked
+  console.log("Button clicked!"); 
+  createContainer();
+});
+
+function createContainer(){
+    const containerWidth = 100;
+    const containerHeight = 100;
+    // const topLeft = {x: ground + 10, y: leftWall + 10};
+    // const topRight = {x: ground + 10 + containerWidth, y: rightWall - 10};
+    // const bottomRight = {x: ground + 10 + containerWidth, y: rightWall - 10 + containerHeight};
+    // const bottomLeft = {x: ground + 10, y: rightWall - 10 + containerHeight};
+    // var vertices = [
+    //     { x: 0, y: 0 },
+    //     { x: 100, y: 0 },
+    //     { x: 100, y: 50 },
+    //     { x: 0, y: 50 }
+    //   ];
+
+    const bottomSide = Bodies.rectangle(width/2, height-10, width - 50, 20, wallOptions);
+    const leftSide = Bodies.rectangle(10, height/2, 20, height - 100, wallOptions);
+    const rightSide = Bodies.rectangle(width-10, height/2, 20, height - 100, wallOptions);
+
+    const elem = document.createElement('div');
+    elem.className = 'container';
+    thoughtContainer.appendChild(elem);
+
+    //   var bounds = Matter.Bounds.create(vertices); //[1, 2, 5]
+    Matter.Composite.add(engine.world, [leftSide, bottomSide, rightSide]);
+}
 
 function checkBounds(circle) {
   // Ensure circle does not exist the canvas
