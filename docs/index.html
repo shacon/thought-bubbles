@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Matter.js Project</title>
-    
+
     <!-- Matter.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
-    
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="input-form">
       <form id="circleForm">
         <p>
-          <a href="https://www.choosingtherapy.com/cognitive-defusion/">Detaching from thoughts</a>
-          can be a helpful technique to respond more flexibly to difficult situations.
-          The below exercise is based on a technique that helps you separate from your thoughts in order to gain perspective.
+          <a href="https://www.choosingtherapy.com/cognitive-defusion/"
+            >Detaching from thoughts</a
+          >
+          can be a helpful technique to respond more flexibly to difficult
+          situations. The below exercise is based on a technique that helps you
+          separate from your thoughts in order to gain perspective.
         </p>
-        <p>Write out each of your thoughts here. Create a bubble for each thought. </p>
-        <p>Try throwing, bouncing or spinning them. </p>
-        <input type="text" id="circleText" placeholder="Enter text here">
-        <button class="button-8"type="submit">Create</button>
-        <button class="button-8"type="click" id="container-button">Create Container</button>
+        <p>
+          Write out each of your thoughts here. Create a bubble for each
+          thought.
+        </p>
+        <p>Try throwing, bouncing or spinning them.</p>
+        <input type="text" id="circleText" placeholder="Enter text here" />
+        <button class="button-8" type="submit">Create</button>
+        <button class="button-8" type="click" id="container-button">
+          Create Container
+        </button>
       </form>
     </div>
     <div id="simulation-container">
-      <canvas id="matter-container" ></canvas>
+      <canvas id="matter-container"></canvas>
       <div id="circles-container"></div>
       <div id="thought-container"></div>
     </div>
-    <script src="script.js"></script>
-</body>
+    <script src="script_test.js"></script>
+  </body>
 </html>
