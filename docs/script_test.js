@@ -6,6 +6,46 @@ var Engine = Matter.Engine,
   Mouse = Matter.Mouse,
   MouseConstraint = Matter.MouseConstraint;
 
+var peer = new Peer();
+
+let conn;
+
+peer.on('open', function(id) {
+  console.log('My peer ID is: ' + id);
+});
+
+peer.on('connection', function(conn) {
+  // Receive messages
+  conn.on('data', function(data) {
+    console.log('Received', data);
+  });
+});
+
+function connectAndSendToPeer(peerId) {
+  console.log('Attempting to connect to Peer : ' + peerId);
+  if (conn === undefined) {
+    conn = peer.connect(peerId);
+  }
+
+  console.log('connection ', conn);
+
+  conn.on('open', function() {
+
+    // Send messages
+    conn.send('Hello from peer!');
+  });
+
+  // console.log("Peer Connection Handler " + dataToSend);
+  // peer?.on('peer connection', (conn) => {
+  //   console.log('peer connection connected')
+  //   conn.on('data', data => {
+  //     console.log('peer received data', data);
+  //     setIsConnected(true);
+  //   });
+  //   setTimeout(() => conn.send(JSON.stringify(dataToSend)), 2000);
+  // });
+}
+
 var canvas = document.getElementById("matter-container");
 var circlesContainer = document.getElementById("circles-container");
 var thoughtContainer = document.getElementById("thought-container");
@@ -151,6 +191,9 @@ class BubbleManager {
   }
 
   createBubble(text) {
+    // this is a hack, the idea is to get peerId from the console from the other browser
+    // and input it into the text bubble and see if we can connect
+    connectAndSendToPeer(text)
     const bubbleSize = this.calculateSize(text);
     const bubbleElement = this.createBubbleElement(text, bubbleSize);
     const physicsBody = this.createPhysicsBody(bubbleElement, bubbleSize);
