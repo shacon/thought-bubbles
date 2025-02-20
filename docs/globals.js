@@ -1,4 +1,6 @@
 
 export const globals = {
-    peer: null, conn: null, test: "dummy"
+    peer: null,
+    conn: null,
+    shared_bubble_text: null,
 }
