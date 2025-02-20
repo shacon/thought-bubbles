@@ -7,12 +7,27 @@
 
     <!-- Matter.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
-
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="input-form">
       <form id="circleForm">
+        <table class="display">
+          <tr>
+            <td>
+              <div id="peer-id-link-container"></div>
+            </td>
+            <td>
+              <input type="text" id="send-message-input" placeholder="Enter a message..." autofocus="true" />
+              <button type="button" id="send-button">Send</button>
+            </td>
+          </tr>
+          <tr>
+            <td><div id="status" class="status"></div></td>
+            <td><div class="message" id="message"></div></td>
+          </tr>
+        </table>
         <p>
           <a href="https://www.choosingtherapy.com/cognitive-defusion/"
             >Detaching from thoughts</a
@@ -38,6 +53,8 @@
       <div id="circles-container"></div>
       <div id="thought-container"></div>
     </div>
-    <script src="script_test.js"></script>
+    <script type="module" src="script_test.js"></script>
+    <script type="module" src="networking.js"></script>
+    <script type="module" src="globals.js"></script>
   </body>
 </html>
