@@ -1,6 +1,6 @@
-import {initializePeer} from "./networking.js";
+// import { initializePeer } from "./networking.js";
 
-initializePeer();
+// initializePeer();
 
 var Engine = Matter.Engine,
   Render = Matter.Render,
