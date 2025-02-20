@@ -1,6 +1,7 @@
-// import { initializePeer } from "./networking.js";
+import { initializePeer } from "./networking.js";
+import {globals} from "./globals.js";
 
-// initializePeer();
+initializePeer();
 
 var Engine = Matter.Engine,
   Render = Matter.Render,
@@ -159,12 +160,23 @@ class BubbleManager {
     const bubbleElement = this.createBubbleElement(text, bubbleSize);
     const physicsBody = this.createPhysicsBody(bubbleElement, bubbleSize);
     // this.bubbles.push(physicsBody);
+
     this.bubbles.push({
       body: physicsBody,
       element: bubbleElement,
       text: text,
       size: bubbleSize,
     });
+
+    // Send over all bubbles to peer if connection exists
+    console.log('going to try to send to peer');
+    if (globals.conn && globals.conn.open) {
+      console.log('connection open, sending bubble', text)
+      globals.conn.send(JSON.stringify(text));
+      console.log('sent stringified message');
+    } else {
+      console.log('Connection is closed send button');
+    }
   }
 }
 
@@ -366,6 +378,11 @@ document.getElementById("circleForm").addEventListener("submit", function (e) {
   const text = document.getElementById("circleText").value;
   if (text) {
     bubbleManager.createBubble(text);
+    if (globals.shared_bubble_text) {
+      bubbleManager.createBubble(globals.shared_bubble_text);
+      globals.shared_bubble_text = null;
+    }
+
     document.getElementById("circleText").value = "";
   }
 });
