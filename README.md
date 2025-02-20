@@ -7,7 +7,6 @@ simulate CDN by running the following command from the `docs` directory
  python -m http.server 8001
 ```
 Then open http://localhost:8001/
-and also open http://localhost:8001/send.html
 and paste the ID from one to the other to send messages back and forth
 
 ## Deploy
