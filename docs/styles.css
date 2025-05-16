@@ -1,6 +1,7 @@
 body {
-  font-family: -apple-system, system-ui, "Segoe UI", "Liberation Sans",
-    sans-serif;
+  /* font-family: -apple-system, system-ui, "Segoe UI", "Liberation Sans",
+    sans-serif; */
+  font-family: roboto;
   background: rgb(58, 135, 180);
   background: linear-gradient(
     90deg,
@@ -11,12 +12,29 @@ body {
 }
 input {
   padding: 8px 0.8em;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
 }
 .input-form {
   margin: auto;
-  width: 50%;
+  width: 75%;
   padding: 10px 0;
-  color: #59575e;
+  margin: 0.5rem auto;
+  padding: 0.5rem 1rem 1rem;
+  line-height: 1.6;
+  color: #333;
+  background-color: #faf5f8c2;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  color: #555555;
+}
+
+.input-form a {
+  color: #3366cc;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom 0.3s;
 }
 .circle {
   padding: 10px;
@@ -37,39 +55,29 @@ input {
   border-radius: 50%;
 }
 .button-8 {
-  background-color: #e1ecf4;
-  border-radius: 3px;
-  border: 1px solid #7aa7c7;
-  box-shadow: rgba(255, 255, 255, 0.7) 0 1px 0 0 inset;
-  box-sizing: border-box;
-  color: #39739d;
+  background: linear-gradient(to bottom, #4299e1, #3182ce);
+  border-radius: 4px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
   cursor: pointer;
   display: inline-block;
-  font-family: -apple-system, system-ui, "Segoe UI", "Liberation Sans",
-    sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.15385;
-  margin: 0;
-  outline: none;
-  padding: 8px 0.8em;
-  position: relative;
+  font-family: -apple-system, system-ui, "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  padding: 10px 18px;
   text-align: center;
   text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
-  white-space: nowrap;
+  transition: transform 0.1s ease;
 }
-.button-8:hover,
-.button-8:focus {
-  background-color: #b3d3ea;
-  color: #2c5777;
+
+.button-8:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(to bottom, #4299e1, #2b6cb0);
 }
-.button-8:focus {
-  box-shadow: 0 0 0 4px rgba(0, 149, 255, 0.15);
-}
+
 .button-8:active {
   background-color: #a0c7e4;
   box-shadow: none;
@@ -91,6 +99,7 @@ input {
 }
 
 canvas#matter-container {
+  border-radius: 10px;
   background: rgb(58, 135, 180);
   background: linear-gradient(
     90deg,
@@ -130,9 +139,9 @@ canvas#matter-container {
   height: 100%;
 }
 
-canvas {
+/* canvas {
   margin-top: 10px;
-}
+} */
 
 @media screen and (max-width: 600px) {
   #simulation-container {
@@ -143,7 +152,7 @@ canvas {
   }
 
   .input-form {
-    margin: 20px auto;
+    margin: 10px auto;
     width: 90%;
     max-width: 800px;
   }
@@ -156,6 +165,7 @@ canvas {
 }
 
 #matter-container {
+  border-radius: 10px;
   width: 100%;
   height: 100%;
 }

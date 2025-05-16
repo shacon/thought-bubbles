@@ -65,7 +65,7 @@ const ceiling = Bodies.rectangle(width / 2, 10, width, 20, wallOptions);
 
 Matter.Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
 
-const containerButton = document.getElementById("container-button");
+// const containerButton = document.getElementById("container-button");
 
 // CLASSES
 class BubbleManager {
@@ -291,11 +291,11 @@ class ContainerManager {
     this.engine = engine;
     this.thoughtContainer = thoughtContainer;
     this.simulationContainer = simulationContainer;
-    this.containerButton = document.getElementById("container-button");
+    // this.containerButton = document.getElementById("container-button");
 
-    this.containerButton.addEventListener("click", () =>
-      this.createContainer()
-    );
+    // this.containerButton.addEventListener("click", () =>
+    //   this.createContainer()
+    // );
   }
 
   createContainer() {
@@ -346,8 +346,8 @@ class ContainerManager {
     thoughtContainer.appendChild(elem);
 
     // TODO - store state somewhere
-    const containerButton = document.getElementById("container-button");
-    containerButton.disabled = true;
+    // const containerButton = document.getElementById("container-button");
+    // containerButton.disabled = true;
 
     Matter.Composite.add(engine.world, [leftSide, bottomSide, rightSide]);
   }

@@ -120,7 +120,7 @@ document.getElementById("circleForm").addEventListener("submit", function (e) {
   }
 });
 
-const containerButton = document.getElementById("container-button");
+// const containerButton = document.getElementById("container-button");
 
 // Add the event listener
 containerButton.addEventListener("click", function () {
@@ -175,7 +175,7 @@ function createContainer() {
   thoughtContainer.appendChild(elem);
 
   // TODO - store state somewhere
-  const containerButton = document.getElementById("container-button");
+  // const containerButton = document.getElementById("container-button");
   containerButton.disabled = true;
 
   Matter.Composite.add(engine.world, [leftSide, bottomSide, rightSide]);
